@@ -1,0 +1,20 @@
+# Node JS 지식 보유가 필요한 이유
+
+1. 브라우저보다 js 업데이트가 빠르기 때문에
+2. 빌드 자동화
+3. 개발 환경 커스터마이징
+    - 자동화된 도구를 사용할 수 없는 환경에서 대처 필요
+
+## node init
+
+1. mkdir "디렉토리명"
+2. cd "디렉토리명"
+3. npm init
+4. package.json 생성
+    - "script" : {
+        "test" : "~~~~"
+        "build" : "~~~~"
+    }
+
+    "npm test"
+    "npm run build"
