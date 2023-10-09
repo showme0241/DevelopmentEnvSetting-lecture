@@ -1,0 +1,32 @@
+# 웹팩(기본)
+
+### 배경
+
+1. 문법 수준에서 모듈을 지원하기 시작한 것은 ES2015
+import/export 구문이 없었던 모듈 이전 상황을 살펴보는 것이 웹팩 등장 배경을 이해하기 수월
+
+    - src 폴더 생성
+    - 2개의 js파일 생성
+        a. app.js
+        b. math.js
+    - root 경로 > index.html 생성
+        [과거 모듈방식]
+        a. script 로딩
+            1. math.js
+            2. app.js
+        => 문제 : 전역 scope 오염
+
+        b. IIFE(즉시 실행함수)로 대체 => window 객체에 math를 생성하여 sum 변수를 대입
+            (func () {
+                /* ~ */
+            })();
+
+        c. CommonJS
+            exports func(){} <-> require("./")
+        
+        [현재 모듈방식] : ES2015 표준 모듈 시스템
+        a. export func(){} <-> import {} from './'
+            - <script type="module" src="경로"></script>
+
+        => 하지만 모든 브라우저에서 모듈 시스템을 지원하지 X
+        => 모든 브라우저에서 모듈을 사용할 수 있게 "webpack"이 등장
