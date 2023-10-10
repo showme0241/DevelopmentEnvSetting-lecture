@@ -1,0 +1,122 @@
+# ESLint의 속성 설명
+
+1. root : 모노레포를 사용할 때, 유용
+    {
+        "root": true
+    }
+
+    - 현재 린트(lint) 대상의 파일이 위치한 폴더 안에 설정 파일이 있는지 우선적으로 확인해보고 없으면
+      root 옵션이 true로 설정되어 있는 설정 파일을 만나면 상위 폴더로 올라가지 않습니다.
+
+    - 프로젝트의 별 설정 파일에는 root 옵션을 false로 설정하고,
+      코드 저장소 최상위 경로에는 root 옵션을 true로 설정하면
+      코드 저장소의 공통 설정과 프로젝트별 특화 설정을 분리해서 관리할 수 있어서 편리합니다.
+
+
+2. plugins : 추가적인 규칙(rule)을 사용할 수 있도록 만들어주는 다양한 플러그인(plugin)
+    {
+        // plugin 사용시, 개발 의존성으로 미리 설치 필요
+        // npm i -D eslint-plugin-import eslint-plugin-react
+        "plugins": ["import", "react"]
+    }  
+    - 해당 플러그인의 적용은 설정 가능한 상태로 만들어진 것이며, 상태값을 핸들링하기 위해서는
+      extends 옵션이나 rules 옵션을 통해서 추가 설정을 해줘야 합니다.
+
+3. extends : extends 옵션을 통해서 이러한 기업들이 공개해놓은 설정을 그대로 가져와 기반(base) 설정으로 활용
+    {
+        // npm i -D eslint-config-airbnb
+        // "extends": ["airbnb"]
+
+        // 설치된 플러그인을 코드 환경에 반영시키 위해서 확장(extends)이 필요 
+        "extends": ["plugin:import/recommended", "plugin:react/recommended"]
+    }
+
+4. rules : extends 옵션을 통해서 설정된 규칙을 덮어쓰고 싶을 때 유용하게 쓸 수 있습니다.
+    {
+        "extends": ["airbnb"],
+        // extends를 통해 airbnb 린트 규칙을 상속 받은 상태에서 rules를 통해 새로운 값으로 적용
+        // rules 옵션으로 명시된 규칙을 extends 옵션을 통해서 가져온 규칙보다 우선
+        "rules": {
+            "no-console": "error", (as-is:"warn")
+            "import/prefer-default-export": "off", (as-is:"error")
+        }
+    }
+
+5. env : 런타임에서 기본적으로 제공되는 전역 객체에 대한 설정을 통해 사전 세팅 필요
+    ex) windows 전역객체 => 브라우저 OK, 노드 NO
+    {
+        "env": {
+            "browser": true,
+            "node": true
+        }
+    }
+
+6. parser & parserOptions
+    - ESLint는 기본적으로 순수한 자바스크립트 코드만 이해할 수 있기 때문에
+      자바스크립트의 확장 문법이나 최신 문법으로 작성한 코드를 린트(lint)하기 위해서는
+      그에 상응하는 파서(parser)를 사용하도록 설정해줘야 합니다.
+    
+    typescript + jsx
+    {
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "jsx": true
+            },
+            "ecmaVersion": 11,
+        }
+    }
+
+    babel ***
+    {
+        "parser": "@babel/eslint-parser"
+    }
+    
+7. settings : ESLint 플러그인은 추가적인 설정이 가능
+    {   
+        // react 플러그인이 프로젝트에 설치된 리액트 버전을 자동 탐지
+        "settings": {
+            "react": {
+                "version": "detect"
+            }
+        }
+    }
+
+8. ignorePatterns 옵션과 .eslintignore 파일
+    - ESLint는 린트(lint)를 수행할 때 기본적으로 node_modules 폴더나 .로 시작하는 설정 파일은 무시하고,
+      그 밖에 다른 파일을 무시하고 싶다면 ignorePatterns 옵션 사용
+    {
+        "ignorePatterns": ["build", "dist", "public"]
+    }
+
+9. overrides : 프로젝트 내에서 일부 파일에 대해서만 살짝 다른 설정을 적용해줘야 할 때, 필요한 옵션
+
+    typescript 전용
+    {
+        "overrides": [
+            {
+                "files": "**/*.+(ts|tsx)",
+                "parser": "@typescript-eslint/parser",
+                "plugins": ["@typescript-eslint"],
+                "extends": ["plugin:@typescript-eslint/recommended"]
+            }
+        ]
+    }
+
+    {
+        "overrides": [
+            {
+                "files": ["**/__tests__/**/*", "**/*.{spec,test}.*"],
+                "env": {
+                    "jest/globals": true
+                },
+                "plugins": ["jest", "testing-library"],
+                "extends": [
+                    "plugin:jest/recommended",
+                    "plugin:jest-dom/recommended",
+                    "plugin:testing-library/react"
+                ]
+            }
+        ]
+    }
