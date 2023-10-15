@@ -1,0 +1,27 @@
+# 웹팩의 등장 : 모든 브라우저에서 모듈 시스템을 적용시키기 위한 번들러로서 역할 수행
+    - 웹팩 === 번들러
+    - 웹팩은 여러개 파일을 하나의 파일로 합쳐주는 번들러
+    - 하나의 시작점(entry point)으로 부터 의존적인 모듈을 전부 찾아내서 하나의 결과물을 만들어 낸다.
+    - ex) app.js부터 시작해 math.js 파일을 찾은 뒤 하나의 파일로 만드는 방식이다.
+
+    1. npm install -D webpack webpack-cli : 번들러 웹팩 설치하기
+    2. node_modules/.bin/webpack --help : 옵션 설명 찾기
+
+## 엔트리/아웃풋
+    - 모드(mode) : 모듈을 번들하는 환경
+        > development, production, none
+    - 엔트리(entry) : 모듈이 시작되는 곳
+        > index.js || app.js ...
+    - 아웃풋(output:o) : 웹팩의 모든 모듈을 합친 후, 결과를 저장하는 경로
+        > dist/...
+
+    => 엔트리&아웃풋 단계를 거친 번들링된 파일은 모든 브라우저에서 실행된다.
+
+## 번들링
+    - 명령어로 실행 가능
+        ex) node_modules/.bin/webpack --mode development --entry ./src/app.js --o dist
+    - 자동화로 실행 가능
+        webpack.config.js 파일을 생성한 뒤, options 설정
+        
+    
+
